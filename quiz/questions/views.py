@@ -33,9 +33,14 @@ def process_question(request):
         request.session["current_question_number"] += 1
         request.session["questions_remain"] -= 1
         question = get_object_or_404(Question, pk=question_id)
-        possible_answers = get_possible_answers(question)
+        # possible_answers = get_possible_answers(question)
+        possible_answers = question.answers.all()  # type:ignore
         context = {
             "question": question,
             "possible_answers": possible_answers,
         }
     return render(request, "questions/quiz.html", context=context)
+
+
+def quiz_result(request):
+    return render(request, "questions/quiz_result.html")

@@ -9,9 +9,21 @@
         <p>Current question is:</p>
         <p>{{ question }}</p>
         <hr>
-        {% for possible_answer in possible_answers %}
-            <li>{{ possible_answer }}</li>
-        {% endfor %}
         <p><a href="{% url 'questions:process_question' %}">Next question</a></p>
+    </div>
+    <div>
+        <form method="post" action="">
+            {% csrf_token %}
+            <fieldset>
+                <legend><h1>{{ question.description }}</h1></legend>
+                {% for choice in possible_answers %}
+                    <p>
+                        <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+                        <label for="choice{{ forloop.counter }}">{{ choice.description }}</label>
+                    </p>
+                {% endfor %}
+            </fieldset>
+            <input type="submit" value="Vote">
+        </form>
     </div>
 {% endblock %}
