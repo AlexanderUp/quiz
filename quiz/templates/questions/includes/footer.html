@@ -1,0 +1,8 @@
+{% with request.resolver_match.view_name as view_name %}
+    {% if view_name != "questions:index" %}
+        <div>
+            <hr>
+            <p><a href="{% url 'questions:index' %}">Back to Index</a></p>
+        </div>
+    {% endif %}
+{% endwith %}

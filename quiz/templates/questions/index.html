@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Index{% endblock %}
+{% block content %}
+<h1>Welcome to QUIZ!</h1>
+<div>
+    <h3>Index</h3>
+    <hr>
+    <p><a href="{% url 'questions:start_quiz' %}">Start quiz</a></p>
+</div>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Quiz{% endblock %}
+{% block content %}
+    <h1>Quiz</h1>
+    <div>
+        <p>Question #{{ request.session.current_question_number }}</p>
+        <p>Questions left: {{ request.session.questions_remain }}</p>
+        <p>Current question stack: {{ request.session.question_pks }}</p>
+        <p>Current question is:</p>
+        <p>{{ question }}</p>
+        <hr>
+        {% for possible_answer in possible_answers %}
+            <li>{{ possible_answer }}</li>
+        {% endfor %}
+        <p><a href="{% url 'questions:process_question' %}">Next question</a></p>
+    </div>
+{% endblock %}
