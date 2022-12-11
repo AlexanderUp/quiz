@@ -3,5 +3,12 @@
 {% block content %}
 <div>
     <h1>Quiz result:</h1>
+    {% for answer_given in answers_given %}
+        <li>{{ answer_given.question }} -->> {{ answer_given.answer }} <b>!!{{ answer_given.answer.is_correct|yesno:"Correct,Not_Correct" }}!!</b></li>
+    {% endfor %}
+</div>
+<div>
+    <hr>
+    <h3>Total test score: {{ quiz.score }}</h3>
 </div>
 {% endblock %}

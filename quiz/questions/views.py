@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.views.generic import TemplateView
 
-from .models import Question, QuestionType
+from .models import AnswerGiven, Question, QuestionType, Quiz
 from .utils import get_possible_answers, prepare_quiz
 
 
@@ -18,6 +18,7 @@ def start_quiz(request):
         session_key=request.session.session_key
     )
     questions = quiz.questions.order_by("-id").all()
+    request.session["quiz_pk"] = quiz.pk
     request.session["question_pks"] = [question.pk for question in questions]
     request.session["current_question_number"] = 0
     request.session["questions_remain"] = questions.count()
@@ -28,7 +29,7 @@ def process_question(request):
     try:
         question_id = request.session["question_pks"].pop()
     except IndexError:
-        return redirect("questions:index")
+        return redirect("questions:quiz_result")
     else:
         request.session["current_question_number"] += 1
         request.session["questions_remain"] -= 1
@@ -42,5 +43,35 @@ def process_question(request):
     return render(request, "questions/quiz.html", context=context)
 
 
+def process_answer(request, question_pk):
+    question = get_object_or_404(Question, pk=question_pk)
+    answer_given = get_object_or_404(
+        question.answers, pk=request.POST.get("choice")  # type:ignore
+    )
+    quiz_pk = request.session.get("quiz_pk")
+    quiz = get_object_or_404(Quiz, pk=quiz_pk)
+    AnswerGiven.objects.create(
+        quiz=quiz, question=question, answer=answer_given)
+    import sys
+    print(">>>>>>>>>>>>>> answer processed", file=sys.stderr)
+    return redirect(reverse("questions:process_question"))
+
+
 def quiz_result(request):
-    return render(request, "questions/quiz_result.html")
+    quiz = get_object_or_404(
+        Quiz,
+        pk=request.session.get("quiz_pk")
+    )
+    answers_given = quiz.answers_given.select_related(  # type:ignore
+        "question", "answer")
+    quiz.is_completed = True
+    quiz_score = sum(
+        (answer_given.answer.is_correct for answer_given in answers_given)
+    )
+    quiz.score = quiz_score
+    quiz.save()
+    context = {
+        "quiz": quiz,
+        "answers_given": answers_given,
+    }
+    return render(request, "questions/quiz_result.html", context=context)

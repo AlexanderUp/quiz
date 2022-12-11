@@ -12,7 +12,7 @@
         <p><a href="{% url 'questions:process_question' %}">Next question</a></p>
     </div>
     <div>
-        <form method="post" action="">
+        <form method="post" action="{% url 'questions:process_answer' question.pk %}">
             {% csrf_token %}
             <fieldset>
                 <legend><h1>{{ question.description }}</h1></legend>

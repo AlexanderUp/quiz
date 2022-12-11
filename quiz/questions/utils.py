@@ -13,7 +13,7 @@ def prepare_quiz(
     questions = get_list_or_404(question_type.questions)  # type:ignore
     question_choosen = random.sample(questions, settings.QUIZ_QUESTION_COUNT)
     quiz, is_created = Quiz.objects.get_or_create(
-        user=user, session_key=session_key)
+        user=user, session_key=session_key, is_completed=False)
     quiz.questions.set(question_choosen, clear=True)  # type:ignore
     return quiz
 

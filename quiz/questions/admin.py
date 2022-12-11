@@ -47,7 +47,7 @@ class QuizAdmin(admin.ModelAdmin):
         "pk",
         "user",
         "session_key",
-        "is_passed",
+        "is_completed",
         "score",
     )
     list_select_related = (
@@ -61,12 +61,12 @@ class AnswerGivenAdmin(admin.ModelAdmin):
         "pk",
         "quiz",
         "question",
-        "is_correct",
-        "description",
+        "answer",
     )
     list_select_related = (
         "quiz",
         "question",
+        "answer",
     )
     empty_value = "-- empty --"
 

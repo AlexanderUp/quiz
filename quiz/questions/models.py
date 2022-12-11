@@ -110,9 +110,9 @@ class Quiz(models.Model):
         verbose_name="session_key",
         help_text="Session key",
     )
-    is_passed = models.BooleanField(
-        verbose_name="is_passed",
-        help_text="Is quiz passed?",
+    is_completed = models.BooleanField(
+        verbose_name="is_completed",
+        help_text="Is quiz completed?",
         default=False,
     )
     questions = models.ManyToManyField(
@@ -151,15 +151,11 @@ class AnswerGiven(models.Model):
         on_delete=models.CASCADE,
         help_text="Answer related question",
     )
-    is_correct = models.BooleanField(
-        verbose_name="is_correct",
-        help_text="Is given answer correct?",
-        default=False,
-    )
-    description = models.CharField(
-        max_length=100,
-        verbose_name="description",
-        help_text="Answer description",
+    answer = models.ForeignKey(
+        Answer,
+        on_delete=models.CASCADE,
+        verbose_name="answer",
+        help_text="Answer given by user",
     )
 
     class Meta:
