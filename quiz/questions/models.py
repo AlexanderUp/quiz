@@ -103,7 +103,7 @@ class Quiz(models.Model):
         related_name="quizes",
         on_delete=models.CASCADE,
         verbose_name="user",
-        help_text="User havig quiz",
+        help_text="User having quiz",
     )
     session_key = models.CharField(
         max_length=40,
@@ -159,9 +159,40 @@ class AnswerGiven(models.Model):
     )
 
     class Meta:
-        verbose_name = "AnswerGiven"
-        verbose_name_plural = "AnswersGiven"
+        verbose_name = "Answer given"
+        verbose_name_plural = "Answers given"
         ordering = ("-pk",)
 
     def __srt__(self):
         return f"AnswerGiven({self.pk})"
+
+    @property
+    def is_correct(self):
+        return self.answer.is_correct
+
+
+class QuestionCollection(models.Model):
+    name = models.CharField(
+        max_length=100,
+        verbose_name="name",
+        help_text="Question collection name",
+    )
+    description = models.CharField(
+        max_length=200,
+        verbose_name="description",
+        help_text="Question collection description",
+    )
+    collection_questions = models.ManyToManyField(
+        to=Question,
+        related_name="collections",
+        verbose_name="collection_questions",
+        help_text="Questions in qeustion collection",
+    )
+
+    class Meta:
+        verbose_name = "Question Collection"
+        verbose_name_plural = "Question Collections"
+        ordering = ("-pk",)
+
+    def __str__(self):
+        return f"{self.name[:settings.MAX_MODEL_OBJ_STR_LENGHT]}"

@@ -4,11 +4,18 @@
 <div>
     <h1>Quiz result:</h1>
     {% for answer_given in answers_given %}
-        <li>{{ answer_given.question }} -->> {{ answer_given.answer }} <b>!!{{ answer_given.answer.is_correct|yesno:"Correct,Not_Correct" }}!!</b></li>
+        <li>{{ answer_given.question }} -->> {{ answer_given.answer }} <b>{{ answer_given.answer.is_correct|yesno:"Correct,Not Correct" }}</b></li>
+        {% if forloop.last %}
+            <hr>
+        {% endif %}
     {% endfor %}
+    <p>Total questions: <b>{{ quiz.questions.count }}</b></p>
+    <p>Correct answers given: <b>{{ quiz.score }}</b></v></p>
+    <p>Wrong answers given: <b>{{ wrong_answers_count }}</b></p>
+    <p>Correct answer percentage: <b>{{ percentage }}%</b></p>
 </div>
 <div>
     <hr>
-    <h3>Total test score: {{ quiz.score }}</h3>
+    <h3>Total test score: <b>{{ quiz.score }}</b></h3>
 </div>
 {% endblock %}

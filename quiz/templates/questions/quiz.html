@@ -9,7 +9,6 @@
         <p>Current question is:</p>
         <p>{{ question }}</p>
         <hr>
-        <p><a href="{% url 'questions:process_question' %}">Next question</a></p>
     </div>
     <div>
         <form method="post" action="{% url 'questions:process_answer' question.pk %}">
