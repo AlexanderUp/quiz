@@ -4,13 +4,13 @@
     <head>
         <meta charset="utf-8">
         <title>{% block title %}{% endblock %}</title>
-        <header></header>
+        <header>{% include 'includes/header.html' %}</header>
     </head>
     <body>
         {% block content %}
         {% endblock %}
     </body>
     <footer>
-        {% include 'questions/includes/footer.html' %}
+        {% include 'includes/footer.html' %}
     </footer>
 </html>

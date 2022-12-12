@@ -1,0 +1,11 @@
+<div>
+    {% if user.is_authenticated %}
+        <p><a href="{% url 'users:logout' %}">Logout</a></p>
+        <p>Currently you are logged in as <b>{{ user.username }}</b></p>
+    {% elif user.is_anonymous %}
+        <a href="{% url 'users:login' %}">Login</a>
+        <a href="{% url 'users:signup' %}">Signup</a>
+        <p>You are not logged in.</p>
+    {% endif %}
+    <hr>
+</div>
