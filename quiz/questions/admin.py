@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.core.exceptions import ValidationError
+from django.forms import BaseInlineFormSet
 
 from .models import (Answer, AnswerGiven, Question, QuestionCollection,
                      QuestionType, Quiz)
@@ -20,8 +22,26 @@ class AnswerAdmin(admin.ModelAdmin):
     empty_value = "-- empty --"
 
 
+class AnswerAdminFormSet(BaseInlineFormSet):
+
+    def clean(self):
+        super().clean()
+        answer_correctness = (
+            form.cleaned_data["is_correct"] for form in self.forms
+            if form.cleaned_data
+        )
+        validness = any(answer_correctness) and not all(answer_correctness)
+        if not validness:
+            raise ValidationError(
+                "Answer set is incorrect. "
+                "None or all answers are set as correct."
+            )
+
+
 class AnswerInline(admin.TabularInline):
     model = Answer
+    extra = 4
+    formset = AnswerAdminFormSet
 
 
 class QuestionAdmin(admin.ModelAdmin):
