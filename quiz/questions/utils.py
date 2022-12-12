@@ -4,14 +4,18 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.shortcuts import get_list_or_404
 
-from .models import Question, QuestionType, Quiz
+from .models import Question, QuestionCollection, Quiz
+
+
+def prepare_question_set(collection: QuestionCollection) -> list:
+    questions = get_list_or_404(collection.collection_questions)
+    return random.sample(questions, settings.QUIZ_QUESTION_COUNT)
 
 
 def prepare_quiz(
-    user: User, question_type: QuestionType, session_key: str
+    user: User, session_key: str, collection: QuestionCollection,
 ) -> Quiz:
-    questions = get_list_or_404(question_type.questions)  # type:ignore
-    question_choosen = random.sample(questions, settings.QUIZ_QUESTION_COUNT)
+    question_choosen = prepare_question_set(collection)
     quiz, is_created = Quiz.objects.get_or_create(
         user=user, session_key=session_key, is_completed=False)
     quiz.questions.set(question_choosen, clear=True)  # type:ignore

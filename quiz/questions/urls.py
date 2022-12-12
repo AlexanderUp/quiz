@@ -5,7 +5,7 @@ from . import views
 app_name = "questions"
 
 urlpatterns = (
-    path("start/", views.start_quiz, name="start_quiz"),
+    path("start/<int:collection_pk>/", views.start_quiz, name="start_quiz"),
     path(
         "question/<int:question_pk>/process_answer/",
         views.process_answer,

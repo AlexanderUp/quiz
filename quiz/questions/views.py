@@ -1,21 +1,22 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
-from django.views.generic import TemplateView
+from django.views.generic import ListView
 
-from .models import AnswerGiven, Question, QuestionType, Quiz
-from .utils import get_possible_answers, prepare_quiz
+from .models import AnswerGiven, Question, QuestionCollection, Quiz
+from .utils import prepare_quiz
 
 
-class IndexView(TemplateView):
+class IndexView(ListView):
+    model = QuestionCollection
     template_name = "questions/index.html"
 
 
-def start_quiz(request):
-    question_type = get_object_or_404(QuestionType, name="Math")
+def start_quiz(request, collection_pk):
+    collection = get_object_or_404(QuestionCollection, pk=collection_pk)
     quiz = prepare_quiz(
         user=request.user,
-        question_type=question_type,
-        session_key=request.session.session_key
+        session_key=request.session.session_key,
+        collection=collection
     )
     questions = quiz.questions.order_by("-id").all()
     request.session["quiz_pk"] = quiz.pk
