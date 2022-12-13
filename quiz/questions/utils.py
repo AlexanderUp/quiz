@@ -9,7 +9,10 @@ from .models import QuestionCollection, Quiz
 
 def prepare_question_set(collection: QuestionCollection) -> list:
     questions = get_list_or_404(collection.collection_questions)
-    return random.sample(questions, settings.QUIZ_QUESTION_COUNT)
+    if len(questions) <= settings.QUIZ_MAX_QUESTION_COUNT:
+        random.shuffle(questions)
+        return questions
+    return random.sample(questions, settings.QUIZ_MAX_QUESTION_COUNT)
 
 
 def prepare_quiz(
