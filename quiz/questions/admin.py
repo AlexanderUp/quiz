@@ -11,7 +11,6 @@ class AnswerAdmin(admin.ModelAdmin):
         "pk",
         "question",
         "question_type",
-        "question_description",
         "description",
         "is_correct",
     )

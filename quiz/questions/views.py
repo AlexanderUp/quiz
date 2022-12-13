@@ -1,3 +1,5 @@
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.views.generic import ListView
@@ -6,11 +8,12 @@ from .models import AnswerGiven, Question, QuestionCollection, Quiz
 from .utils import prepare_quiz
 
 
-class IndexView(ListView):
+class IndexView(LoginRequiredMixin, ListView):
     model = QuestionCollection
     template_name = "questions/index.html"
 
 
+@login_required
 def start_quiz(request, collection_pk):
     collection = get_object_or_404(QuestionCollection, pk=collection_pk)
     quiz = prepare_quiz(
@@ -27,6 +30,7 @@ def start_quiz(request, collection_pk):
     return redirect(reverse("questions:process_question"))
 
 
+@login_required
 def process_question(request):
     try:
         question_id = request.session["question_pks"].pop()
@@ -68,6 +72,7 @@ def process_question(request):
 #     return render(request, "questions/quiz.html", context=context)
 
 
+@login_required
 def process_answer(request, question_pk):
     answer_given_pk = request.POST.get("choice")
     if answer_given_pk is None:
@@ -89,6 +94,7 @@ def process_answer(request, question_pk):
     return redirect(reverse("questions:process_question"))
 
 
+@login_required
 def quiz_result(request):
     quiz = Quiz.objects.prefetch_related("questions").get(
         pk=request.session.get("quiz_pk")
