@@ -154,4 +154,5 @@ media/
 # dev related files
 requirements_dev.txt
 TECHNICAL_TASK.md
+requirements_dev.txt
 settings_local.py

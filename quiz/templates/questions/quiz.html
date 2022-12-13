@@ -5,9 +5,7 @@
     <div>
         <p>Question #{{ request.session.current_question_number }}</p>
         <p>Questions left: {{ request.session.questions_remain }}</p>
-        <p>Current question stack: {{ request.session.question_pks }}</p>
-        <p>Current question is:</p>
-        <p>{{ question }}</p>
+        <!-- <p>Current question stack: {# {{ request.session.question_pks }} #}</p> -->
         <hr>
     </div>
     <div>
