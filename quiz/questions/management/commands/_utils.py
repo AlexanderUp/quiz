@@ -21,6 +21,7 @@ def process_question_types(reader):
 
 def process_questions(reader):
     header = None
+    raw_questions = defaultdict(list)
     questions = []
     for row in reader:
         if not header:
@@ -29,15 +30,21 @@ def process_questions(reader):
         zipped_row = zip(header, row)
         zipped_row_dict = dict(zipped_row)
         question_type_id = zipped_row_dict.pop("question_type_id")
+
+        raw_questions[question_type_id].append(zipped_row_dict)
+
+    for question_type_id, description_list in raw_questions.items():
         question_type = get_object_or_404(QuestionType, pk=question_type_id)
-        questions.append(
-            Question(question_type=question_type, **zipped_row_dict)
-        )
+        for description in description_list:
+            questions.append(
+                Question(question_type=question_type, **description)
+            )
     Question.objects.bulk_create(questions)
 
 
 def process_answers(reader):
     header = None
+    raw_answers = defaultdict(list)
     answers = []
     for row in reader:
         if not header:
@@ -46,8 +53,12 @@ def process_answers(reader):
         zipped_row = zip(header, row)
         zipped_row_dict = dict(zipped_row)
         question_id = zipped_row_dict.pop("question_id")
+        raw_answers[question_id].append(zipped_row_dict)
+
+    for question_id, answer_list in raw_answers.items():
         question = get_object_or_404(Question, pk=question_id)
-        answers.append(Answer(question=question, **zipped_row_dict))
+        for answer in answer_list:
+            answers.append(Answer(question=question, **answer))
     Answer.objects.bulk_create(answers)
 
 
@@ -74,6 +85,7 @@ def process_collections_m2m(reader):
         _, question_collection_id, question_id = row
         collection = collections_m2m[question_collection_id]
         collection.append(question_id)
+
     for question_collection_id, question_ids in collections_m2m.items():
         question_collection = get_object_or_404(
             QuestionCollection, pk=question_collection_id

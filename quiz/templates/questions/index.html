@@ -4,7 +4,6 @@
 <h1>Welcome to QUIZ!</h1>
 <div>
     <h3>Quiz list. Select to start</h3>
-    <hr>
     {% for object in object_list %}
         <p><a href="{% url 'questions:start_quiz' object.pk %}">{{ object.name }}</a></p>
     {% endfor %}
