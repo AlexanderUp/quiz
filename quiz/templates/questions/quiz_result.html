@@ -2,7 +2,7 @@
 {% block title %}Quiz result{% endblock %}
 {% block content %}
 <div class="container">
-    <h1>Quiz result:</h1>
+    <h1>Результаты тестирования:</h1>
     {% for answer_given in answers_given %}
         <li>
             <p><i>{{ answer_given.question }}</i></p>
@@ -12,13 +12,9 @@
             <hr>
         {% endif %}
     {% endfor %}
-    <p>Total questions: <b>{{ quiz.questions.count }}</b></p>
-    <p>Correct answers given: <b>{{ quiz.score }}</b></v></p>
-    <p>Wrong answers given: <b>{{ wrong_answers_count }}</b></p>
-    <p>Correct answer percentage: <b>{{ percentage }}%</b></p>
-</div>
-<div class="container">
-    <hr>
-    <h3>Total test score: <b>{{ quiz.score }}</b></h3>
+    <p>Всего вопросов в тесте: <b>{{ quiz.questions.count }}</b></p>
+    <p>Дано правильных ответов: <b>{{ quiz.score }}</b></v></p>
+    <p>Дано неправильных ответов: <b>{{ wrong_answers_count }}</b></p>
+    <p>Процент правильных ответов: <b>{{ percentage }}%</b></p>
 </div>
 {% endblock %}

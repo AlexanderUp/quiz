@@ -162,3 +162,9 @@ LOGGING = {
 # project related setting
 MAX_MODEL_OBJ_STR_LENGHT = 150
 QUIZ_MAX_QUESTION_COUNT = 10
+
+# loading custom settings from settings_local.py
+path_to_settings_local = BASE_DIR / 'quiz' / 'settings_local.py'
+
+if path_to_settings_local.exists():
+    from .settings_local import *
