@@ -1,10 +1,13 @@
 {% extends "base.html" %}
 {% block title %}Quiz result{% endblock %}
 {% block content %}
-<div>
+<div class="container">
     <h1>Quiz result:</h1>
     {% for answer_given in answers_given %}
-        <li>{{ answer_given.question }} -->> {{ answer_given.answer }} <b>{{ answer_given.answer.is_correct|yesno:"Correct,Not Correct" }}</b></li>
+        <li>
+            <p><i>{{ answer_given.question }}</i></p>
+            <p> Ваш ответ: {{ answer_given.answer }} <b>{{ answer_given.answer.is_correct|yesno:"Correct,Not Correct" }}</b></p>
+        </li>
         {% if forloop.last %}
             <hr>
         {% endif %}
@@ -14,7 +17,7 @@
     <p>Wrong answers given: <b>{{ wrong_answers_count }}</b></p>
     <p>Correct answer percentage: <b>{{ percentage }}%</b></p>
 </div>
-<div>
+<div class="container">
     <hr>
     <h3>Total test score: <b>{{ quiz.score }}</b></h3>
 </div>

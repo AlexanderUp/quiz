@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 {% block title %}Quiz{% endblock %}
 {% block content %}
-    <h1>Quiz</h1>
-    <div>
+    <div class="container">
+        <h1>Quiz</h1>
         <p>Question #{{ request.session.current_question_number }}</p>
         <p>Questions left: {{ request.session.questions_remain }}</p>
         <!-- <p>Current question stack: {# {{ request.session.question_pks }} #}</p> -->
         <hr>
     </div>
-    <div>
+    <div class="container">
         <form method="post" action="{% url 'questions:process_answer' question.pk %}">
             {% csrf_token %}
             <fieldset>

@@ -1,4 +1,4 @@
-<div>
+<div class="container">
     {% if user.is_authenticated %}
         <p><a href="{% url 'users:logout' %}">Logout</a></p>
         <p>Currently you are logged in as <b>{{ user.username }}</b></p>
